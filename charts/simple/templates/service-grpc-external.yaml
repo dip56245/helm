@@ -1,0 +1,24 @@
+{{ if .Values.service.grpcport }}
+{{ if .Values.service.ports.grpc }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc-{{ .Values.service.name }}-grpc-external
+  namespace: {{ .Values.service.namespace }}
+  labels:
+    app: {{ .Values.service.name }}
+    type: service
+    bound: external
+spec:
+  selector:
+    app: {{ .Values.service.name }}
+    type: service
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: {{ .Values.service.ports.grpc }}
+      targetPort: {{ .Values.service.grpcport }}
+  externalIPs:
+    - {{ .Values.externalIP }}
+{{ end }}
+{{ end }}

@@ -1,0 +1,20 @@
+{{ if .Values.service.port }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc-{{ .Values.service.name }}
+  namespace: {{ .Values.service.namespace }}
+  labels:
+    app: {{ .Values.service.name }}
+    type: service
+    bound: internal
+spec:
+  selector:
+    app: {{ .Values.service.name }}
+    type: service
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+{{ end }}

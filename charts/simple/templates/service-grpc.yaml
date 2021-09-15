@@ -1,0 +1,20 @@
+{{ if .Values.service.grpcport }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc-{{ .Values.service.name }}-grpc
+  namespace: {{ .Values.service.namespace }}
+  labels:
+    app: {{ .Values.service.name }}
+    type: service
+    bound: internal
+spec:
+  selector:
+    app: {{ .Values.service.name }}
+    type: service
+  ports:
+    - name: grpc
+      protocol: TCP
+      port: {{ .Values.service.grpcport }}
+      targetPort: {{ .Values.service.grpcport }}
+{{ end }}

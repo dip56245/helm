@@ -1,0 +1,46 @@
+replicaCount: 1
+image:
+  repository: hub.moon.lg.ua/service-name
+  pullPolicy: Always
+  tag: "develop"
+imagePullSecret: moon-hub
+service:
+  name: service-name
+  namespace: name
+  port: 8080
+  # если указан порт grpcport - будет создан svc для GRPC
+  # grpcport: 8081
+  # ports:
+  #   rest: 7100
+  #   grpc: 7101
+  probe:
+    readiness:
+      url: /
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    liveness: 
+      url: /
+      initialDelaySeconds: 10
+      periodSeconds: 30
+limit:
+  memory:
+    request: 32
+    limit: 64
+  cpu:
+    request: 200
+    limit: 750
+
+# externalIP: 172.16.15.1
+
+prometheus:
+  scrape: false
+  port: 8080
+  url: /service-name/metrics
+
+configuration:
+  mountPath: /app/config.yaml
+  subPath: config.yaml
+  data:
+    TZ: UTC
+    config.yaml: |-
+      prefix: /service-name

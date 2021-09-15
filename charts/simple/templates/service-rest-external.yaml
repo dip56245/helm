@@ -1,0 +1,22 @@
+{{ if .Values.service.ports.rest }}
+kind: Service
+apiVersion: v1
+metadata:
+  name: svc-{{ .Values.service.name }}-external
+  namespace: {{ .Values.service.namespace }}
+  labels:
+    app: {{ .Values.service.name }}
+    type: service
+    bound: external
+spec:
+  selector:
+    app: {{ .Values.service.name }}
+    type: service
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ .Values.service.ports.rest }}
+      targetPort: {{ .Values.service.port }}
+  externalIPs:
+    - {{ .Values.externalIP }}
+{{ end }}

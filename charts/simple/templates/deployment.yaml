@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.service.name }}
+  namespace: {{ .Values.service.namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.service.name }}
+      type: service
+  template:
+    metadata:
+      annotations:
+        {{ if .Values.prometheus.scrape }}
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '{{ .Values.prometheus.port }}'
+        prometheus.io/path: '{{ .Values.prometheus.url }}'
+        {{ end }}
+      labels:
+        app: {{ .Values.service.name }}
+        type: service
+    spec:
+      containers:
+        - name: {{ .Values.service.name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              memory: {{ .Values.limit.memory.limit }}Mi
+              cpu: {{ .Values.limit.cpu.limit }}m
+            requests:
+              memory: {{ .Values.limit.memory.request }}Mi
+              cpu: {{ .Values.limit.cpu.request }}m
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.service.probe.readiness.url }}
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: {{ .Values.service.probe.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.service.probe.readiness.periodSeconds }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.service.probe.liveness.url }}
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: {{ .Values.service.probe.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.service.probe.liveness.periodSeconds }}
+          volumeMounts:
+            - name: configuration
+              mountPath: {{ .Values.configuration.mountPath }}
+              subPath: {{ .Values.configuration.subPath }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.service.name }}-config
+      imagePullSecrets: 
+        - name: {{ .Values.imagePullSecret }}
+      volumes:
+        - name: configuration
+          configMap:
+            name: {{ .Values.service.name }}-config
