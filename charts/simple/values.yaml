@@ -5,8 +5,6 @@ image:
   tag: "develop"
 imagePullSecret: moon-hub
 service:
-  name: service-name
-  namespace: name
   port: 8080
   # если указан порт grpcport - будет создан svc для GRPC
   # grpcport: 8081

@@ -1,13 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.service.name }}
-  namespace: {{ .Values.service.namespace }}
+  name: {{ .Chart.Name }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Values.service.name }}
+      app: {{ .Chart.Name }}
       type: service
   template:
     metadata:
@@ -18,11 +17,11 @@ spec:
         prometheus.io/path: '{{ .Values.prometheus.url }}'
         {{ end }}
       labels:
-        app: {{ .Values.service.name }}
+        app: {{ .Chart.Name }}
         type: service
     spec:
       containers:
-        - name: {{ .Values.service.name }}
+        - name: {{ .Chart.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
@@ -52,10 +51,10 @@ spec:
               subPath: {{ .Values.configuration.subPath }}
           envFrom:
             - configMapRef:
-                name: {{ .Values.service.name }}-config
+                name: {{ .Chart.Name }}-config
       imagePullSecrets: 
         - name: {{ .Values.imagePullSecret }}
       volumes:
         - name: configuration
           configMap:
-            name: {{ .Values.service.name }}-config
+            name: {{ .Chart.Name }}-config

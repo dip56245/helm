@@ -3,15 +3,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: svc-{{ .Values.service.name }}-grpc-external
-  namespace: {{ .Values.service.namespace }}
+  name: svc-{{ .Chart.Name }}-grpc-external
   labels:
-    app: {{ .Values.service.name }}
+    app: {{ .Chart.Name }}
     type: service
     bound: external
 spec:
   selector:
-    app: {{ .Values.service.name }}
+    app: {{ .Chart.Name }}
     type: service
   ports:
     - name: grpc

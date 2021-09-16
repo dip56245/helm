@@ -2,15 +2,14 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: svc-{{ .Values.service.name }}
-  namespace: {{ .Values.service.namespace }}
+  name: svc-{{ .Chart.Name }}
   labels:
-    app: {{ .Values.service.name }}
+    app: {{ .Chart.Name }}
     type: service
     bound: internal
 spec:
   selector:
-    app: {{ .Values.service.name }}
+    app: {{ .Chart.Name }}
     type: service
   ports:
     - name: http
