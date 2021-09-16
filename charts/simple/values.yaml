@@ -20,6 +20,8 @@ service:
       url: /
       initialDelaySeconds: 10
       periodSeconds: 30
+# обратить внимание - единица измерения будет подставленна сама - для памяти это Mi, а для CPU - m
+# в данном примере request: 32Mi, limit: 64Mi и соответственно 0.2 от реального CPU и лимит 0.75cpu
 limit:
   memory:
     request: 32
