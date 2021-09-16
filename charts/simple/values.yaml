@@ -35,10 +35,11 @@ prometheus:
   port: 8080
   url: /service-name/metrics
 
-configuration:
-  mountPath: /app/config.yaml
-  subPath: config.yaml
-  data:
-    TZ: UTC
-    config.yaml: |-
-      prefix: /service-name
+# пример как передавать ENV параметры (TZ) и как свой файл прописать
+# configuration:
+#   mountPath: /app/config.yaml
+#   subPath: config.yaml
+#   data:
+#     TZ: UTC
+#     config.yaml: |-
+#       prefix: /service-name
