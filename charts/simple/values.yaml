@@ -4,6 +4,8 @@ image:
   pullPolicy: Always
   tag: "develop"
 imagePullSecret: moon-hub
+# при выставлении в true будет добавлен флаг terminationMessagePolicy: FallbackToLogsOnError
+#useTerminationMessagePolicy: true
 service:
   port: 8080
   # если указан порт grpcport - будет создан svc для GRPC
@@ -38,10 +40,10 @@ prometheus:
   url: /service-name/metrics
 
 # пример как передавать ENV параметры (TZ) и как свой файл прописать
-# configuration:
-#   mountPath: /app/config.yaml
-#   subPath: config.yaml
-#   data:
-#     TZ: UTC
-#     config.yaml: |-
-#       prefix: /service-name
+#configuration:
+# mountPath: /app/config.yaml
+# subPath: config.yaml
+# data:
+#   TZ: UTC
+#   config.yaml: |-
+#     prefix: /service-name
