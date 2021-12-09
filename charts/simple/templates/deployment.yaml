@@ -10,12 +10,12 @@ spec:
       type: service
   template:
     metadata:
+      {{ if .Values.prometheus.scrape }}
       annotations:
-        {{ if .Values.prometheus.scrape }}
         prometheus.io/scrape: 'true'
         prometheus.io/port: '{{ .Values.prometheus.port }}'
         prometheus.io/path: '{{ .Values.prometheus.url }}'
-        {{ end }}
+      {{ end }}
       labels:
         app: {{ .Release.Name }}
         type: service
@@ -24,6 +24,9 @@ spec:
         - name: {{ .Release.Name }}
           image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{ if .Values.useTerminationMessagePolicy }}
+          terminationMessagePolicy: FallbackToLogsOnError
+          {{ end }}
           resources:
             limits:
               memory: {{ .Values.limit.memory.limit }}Mi
@@ -45,16 +48,22 @@ spec:
               port: {{ .Values.service.port }}
             initialDelaySeconds: {{ .Values.service.probe.liveness.initialDelaySeconds }}
             periodSeconds: {{ .Values.service.probe.liveness.periodSeconds }}
+          {{ if .Values.configuration }}
           volumeMounts:
             - name: configuration
               mountPath: {{ .Values.configuration.mountPath }}
               subPath: {{ .Values.configuration.subPath }}
+          {{ end }}
           envFrom:
+            {{ if .Values.configuration }}
             - configMapRef:
                 name: {{ .Release.Name }}-config
+            {{ end }}
       imagePullSecrets: 
         - name: {{ .Values.imagePullSecret }}
+      {{ if .Values.configuration }}
       volumes:
         - name: configuration
           configMap:
             name: {{ .Release.Name }}-config
+      {{ end }}

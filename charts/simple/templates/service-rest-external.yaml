@@ -1,3 +1,4 @@
+{{ if .Values.service.ports }}
 {{ if .Values.service.ports.rest }}
 kind: Service
 apiVersion: v1
@@ -18,4 +19,5 @@ spec:
       targetPort: {{ .Values.service.port }}
   externalIPs:
     - {{ .Values.externalIP }}
+{{ end }}
 {{ end }}
