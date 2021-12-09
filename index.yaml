@@ -3,6 +3,16 @@ entries:
   simple:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-12-09T17:33:23.743709+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 3acde64ffdbef91b7e247d4d3c5749701a9546de9e4f77646974bb7526a718cd
+    name: simple
+    type: application
+    urls:
+    - https://github.com/dip56245/helm/releases/download/simple-0.1.4/simple-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-09-16T12:12:52.310341+03:00"
     description: A Helm chart for Kubernetes
     digest: 43e5eb519f38dffeceffb6cf14963d426737482819b58f9ff4cbb559886fe179
@@ -41,4 +51,4 @@ entries:
     urls:
     - https://github.com/dip56245/helm/releases/download/simple-0.1.0/simple-0.1.0.tgz
     version: 0.1.0
-generated: "2021-09-16T12:12:52.31037+03:00"
+generated: "2021-12-09T17:33:23.743763+02:00"
